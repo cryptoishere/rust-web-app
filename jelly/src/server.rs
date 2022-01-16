@@ -52,8 +52,7 @@ impl Server {
         dotenv::dotenv().ok();
         pretty_env_logger::init();
         
-        // let bind = env::var("BIND_TO").expect("BIND_TO not set!");
-        let _root_domain = env::var("DOMAIN").expect("DOMAIN not set!");
+        let bind = env::var("BIND_TO").expect("BIND_TO not set!");
 
         #[cfg(feature = "production")]
         let domain = env::var("SESSIONID_DOMAIN").expect("SESSIONID_DOMAIN not set!");
@@ -70,28 +69,28 @@ impl Server {
         // SSL
         let mut builder = SslAcceptor::mozilla_intermediate(SslMethod::tls()).unwrap();
         builder
-            .set_private_key_file("/home/crypto/Desktop/rust_test/activx/jelly-actix-web-starter/certs/cert-key.pem", SslFiletype::PEM)
+            .set_private_key_file(env::var("CERT_KEY").expect("CERT_KEY not set!"), SslFiletype::PEM)
             .unwrap();
-        builder.set_certificate_chain_file("/home/crypto/Desktop/rust_test/activx/jelly-actix-web-starter/certs/cert.pem").unwrap();
+        builder.set_certificate_chain_file(env::var("CERT").expect("CERT not set!")).unwrap();
         
         let apps = Arc::new(self.apps);
         let jobs = Arc::new(self.jobs);
 
         let server = HttpServer::new(move || {
             // !production needs no domain set, because browsers.
-            #[cfg(not(feature = "production"))]
+            // #[cfg(not(feature = "production"))]
             let session_storage = CookieSession::signed(key.as_bytes())
                 .name("sessionid")
                 .secure(false)
                 .path("/");
 
-            #[cfg(feature = "production")]
-            let session_storage = CookieSession::signed(key.as_bytes())
-                .name("sessionid")
-                .path("/")
-                .same_site(actix_web::cookie::SameSite::Lax)
-                .domain(&domain)
-                .secure(true);
+            // #[cfg(feature = "production")]
+            // let session_storage = CookieSession::signed(key.as_bytes())
+            //     .name("sessionid")
+            //     .path("/")
+            //     .same_site(actix_web::cookie::SameSite::Lax)
+            //     .domain(&domain)
+            //     .secure(true);
 
             let mut app = App::new()
                 .app_data(pool.clone())
@@ -136,8 +135,8 @@ impl Server {
         .backlog(8192)
         .shutdown_timeout(0)
         .workers(4)
-        // .bind(&bind)?
-        .bind_openssl(env::var("BIND_TO").expect("DATABASE_URL not set!"), builder)?
+        .bind(&bind)?
+        // .bind_openssl(env::var("BIND_TO").expect("DATABASE_URL not set!"), builder)?
         .run();
 
         Ok(server)

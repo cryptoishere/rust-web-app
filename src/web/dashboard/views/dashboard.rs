@@ -20,7 +20,7 @@ pub async fn dashboard(request: HttpRequest) -> Result<HttpResponse> {
         let is_admin = user.is_admin;
         let is_anonymous = user.is_anonymous;
 
-        context.insert("integer_example", &42);
+        context.insert("is_logged_in", &true);
         // context.insert("logger", format!("test logger {:?}",));
         context.insert("user_instance", &format!("DASHBOARD.rs id: {:?} name: {:?} is admin: {:?} is anonymous: {:?}", id, name, is_admin, is_anonymous));
         context

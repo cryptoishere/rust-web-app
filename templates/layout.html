@@ -18,9 +18,42 @@
 </head>
 <body>
     <header>
-        {% block header %}{% endblock %}
+        <nav>
+            {% block header %}
+                {% if is_logged_in %}
+                    <ul>
+                        <li><a href="/">Main</a></li>
+                        <li><a href="/dashboard/">Dashboard</a></li>
+                        <li><a href="/send/">Send STH</a></li>
+                    </ul>
+                {% else %}
+                    <ul>
+                        <li><a href="/">Main</a></li>
+                        <li><a href="/node">Node</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                {% endif %}
+                {% if is_logged_in %}
+                    <ul>
+                        <li>
+                            <form method="post" action="/accounts/logout/">
+                                <button type="submit">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                {% else %}
+                    <ul>
+                        <li><a href="/accounts/login/">Login</a></li>
+                        <li><a href="/accounts/register/">Register</a></li>
+                    </ul>
+                {% endif %}
+            {% endblock %}
+        </nav>
     </header>
-    {% block content %}{% endblock %}
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer></footer>
     <script src="{{ get_env(name='DOMAIN') }}/static/js/scripts.js"></script>
 </body>
 </html>

@@ -1,6 +1,8 @@
 use jelly::prelude::*;
 use jelly::Result;
 
+use crate::web::accounts::jobs::{SendWelcomeAccountEmail};
+
 use log::{debug, error, log_enabled, info, Level};
 
 /// Returns an overview of everything in the system.
@@ -17,6 +19,10 @@ pub async fn dashboard(request: HttpRequest) -> Result<HttpResponse> {
         let name = user.name;
         let is_admin = user.is_admin;
         let is_anonymous = user.is_anonymous;
+
+        request.queue(SendWelcomeAccountEmail {
+            to: id
+        })?;
 
         context.insert("integer_example", &42);
         // context.insert("logger", format!("test logger {:?}",));

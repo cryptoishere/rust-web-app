@@ -1,4 +1,3 @@
-// use std::collections::HashMap;
 use jelly::tera::Context;
 use std::env;
 use std::future::Future;
@@ -47,15 +46,6 @@ impl Job for SendVerifyAccountEmail {
                     anyhow!("Error creating verification token: {:?}", e)
                 })?
             );
-
-            // let email = Email::new("verify-account", &[account.email], {
-            //     let mut model = HashMap::new();
-            //     model.insert("preview", "Verify your new account".into());
-            //     model.insert("action_url", verify_url);
-            //     model
-            // });
-            
-            // email.send()?;
 
             let email = Email::new(
                 "email/verify-account",

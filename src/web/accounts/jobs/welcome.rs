@@ -1,4 +1,3 @@
-// use std::collections::HashMap;
 use jelly::tera::Context;
 use std::pin::Pin;
 use std::future::Future;

@@ -1,4 +1,3 @@
-// use std::collections::HashMap;
 use jelly::tera::Context;
 use std::env;
 use std::future::Future;
@@ -55,13 +54,6 @@ impl Job for SendResetPasswordEmail {
                 build_context(&verify_url),
                 state.templates,
             );
-
-            // let email = Email::new("reset-password", &[account.email], {
-            //     let mut model = HashMap::new();
-            //     model.insert("preview", "Reset your account password".into());
-            //     model.insert("action_url", verify_url);
-            //     model
-            // });
             
             email?.send()?;
             
@@ -84,14 +76,6 @@ impl Job for SendPasswordWasResetEmail {
 
     fn run(self, state: JobState) -> Self::Future {
         Box::pin(async move {
-            // let email = Email::new("password-was-reset", &[self.to], {
-            //     let mut model = HashMap::new();
-            //     model.insert("preview", "Your Password Was Reset".into());
-            //     model
-            // });
-            
-            // email.send()?;
-
             let email = Email::new(
                 "email/password-was-reset",
                 &[self.to],

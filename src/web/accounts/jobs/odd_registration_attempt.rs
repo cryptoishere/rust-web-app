@@ -1,4 +1,3 @@
-// use std::collections::HashMap;
 use jelly::tera::Context;
 use std::env::var;
 use std::pin::Pin;
@@ -49,18 +48,6 @@ impl Job for SendAccountOddRegisterAttemptEmail {
             let name = Account::fetch_name_from_email(&self.to, &state.pool).await.map_err(|e| {
                 anyhow!("Error fetching user name for odd registration attempt: {:?}", e)
             })?;
-
-            // let email = Email::new("odd-registration-attempt", &[self.to], {
-            //     let mut model = HashMap::new();
-            //     model.insert("preview", "Did you want to reset your password?".into());
-            //     model.insert("name", name);
-            //     model.insert("action_url", format!("{}/accounts/reset/", var("DOMAIN")
-            //             .expect("DOMAIN not set?")
-            //     ));
-            //     model
-            // });
-            
-            // email.send()?;
 
             let email = Email::new(
                 "email/odd-registration-attempt",

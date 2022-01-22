@@ -82,19 +82,19 @@ impl Server {
 
         let server = HttpServer::new(move || {
             // !production needs no domain set, because browsers.
-            // #[cfg(not(feature = "production"))]
+            #[cfg(not(feature = "production"))]
             let session_storage = CookieSession::signed(key.as_bytes())
                 .name("sessionid")
                 .secure(false)
                 .path("/");
 
-            // #[cfg(feature = "production")]
-            // let session_storage = CookieSession::signed(key.as_bytes())
-            //     .name("sessionid")
-            //     .path("/")
-            //     .same_site(actix_web::cookie::SameSite::Lax)
-            //     .domain(&domain)
-            //     .secure(true);
+            #[cfg(feature = "production")]
+            let session_storage = CookieSession::signed(key.as_bytes())
+                .name("sessionid")
+                .path("/")
+                .same_site(actix_web::cookie::SameSite::Lax)
+                .domain(&domain)
+                .secure(true);
 
             let mut app = App::new()
                 .app_data(pool.clone())

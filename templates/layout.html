@@ -17,6 +17,9 @@
     <![endif]-->
 </head>
 <body>
+    <header>
+        {% block header %}{% endblock %}
+    </header>
     {% block content %}{% endblock %}
     <script src="{{ get_env(name='DOMAIN') }}/static/js/scripts.js"></script>
 </body>

@@ -1,3 +1,27 @@
+html {
+    --text-color-normal: #0a244d;
+    --text-color-light: #8cabd9;
+    --text-color-richer: hsl(210, 50%, 72%);
+    --text-color-highlight: hsl(25, 70%, 45%);
+}
+
 body {
-    background-color: aqua;
+    background-color: var(--text-color-light);
+    color: var(--text-color-normal);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+    body {
+        background-color: var(--text-color-normal);
+        color: var(--text-color-light);
+    }
+
+    img {
+      opacity: .75;
+      transition: opacity .5s ease-in-out;
+    }
+
+    img:hover {
+      opacity: 1;
+    }
 }

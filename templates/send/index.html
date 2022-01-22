@@ -2,17 +2,20 @@
 
 {% block title %}Send STH{% endblock %}
 
+{% block header %}
+    <ul>
+        <li><a href="/">Main</a></li>
+        <li><a href="/dashboard/">Dashboard</a></li>
+        <li><a href="/node">Node</a></li>
+        <li><a href="/send/">Send STH</a></li>
+        <li><a href="/contact">Contact</a></li>
+    </ul>
+{% endblock %}
+
 {% block content %}
-<ul>
-    <li><a href="/">Main</a></li>
-    <li><a href="/dashboard/">Dashboard</a></li>
-    <li><a href="/node">Node</a></li>
-    <li><a href="/send/">Send STH</a></li>
-    <li><a href="/contact">Contact</a></li>
-</ul>
-<div class="wrapper pageheader">
-    <h1>Send Coins</h1>
-    <p>Here you can send STH coins</p>
-    <p>{{ user_id_string }}</p>
-</div>
+    <div class="wrapper pageheader">
+        <h1>Send Coins</h1>
+        <p>Here you can send STH coins</p>
+        <p>{{ user_id_string }}</p>
+    </div>
 {% endblock %}

@@ -2,7 +2,7 @@
 
 {% block title %}Node{% endblock %}
 
-{% block content %}
+{% block header %}
     <ul>
         <li><a href="/">Main</a></li>
         <li><a href="/node">Node</a></li>
@@ -13,4 +13,8 @@
         <li><a href="/accounts/register/">Register</a></li>
         <li><a href="/accounts/login/">Login</a></li>
     </ul>
+{% endblock %}
+
+{% block content %}
+    <div>Content</div>
 {% endblock %}

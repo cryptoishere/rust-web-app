@@ -1,6 +1,8 @@
 use jelly::prelude::*;
 use jelly::Result;
 
+use crate::web::accounts::jobs::{SendWelcomeAccountEmail};
+
 use log::{debug, error, log_enabled, info, Level};
 
 /// Returns an overview of everything in the system.

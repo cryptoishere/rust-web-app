@@ -8,6 +8,8 @@ use actix_web::web::ServiceConfig;
 use actix_session::CookieSession;
 use sqlx::postgres::{PgPoolOptions};
 
+use crate::email::{Configurable, Email};
+
 use openssl::ssl::{SslAcceptor, SslFiletype, SslMethod};
 
 use crate::jobs::{DEFAULT_QUEUE, JobState};
@@ -51,6 +53,8 @@ impl Server {
     pub async fn run(self) -> std::io::Result<dev::Server> {
         dotenv::dotenv().ok();
         pretty_env_logger::init();
+
+        Email::check_conf();
         
         let bind = env::var("BIND_TO").expect("BIND_TO not set!");
 
@@ -118,7 +122,7 @@ impl Server {
             
             let storage = Storage::new();
             let queue = create_server(storage);
-            let state = JobState::new("JobState", pool.clone());
+            let state = JobState::new("JobState", pool.clone(), templates.clone());
             let mut worker_config = WorkerConfig::new(move || state.clone());
 
             for handler in jobs.iter() {
@@ -135,8 +139,8 @@ impl Server {
         .backlog(8192)
         .shutdown_timeout(0)
         .workers(4)
-        .bind(&bind)?
-        // .bind_openssl(env::var("BIND_TO").expect("DATABASE_URL not set!"), builder)?
+        // .bind(&bind)?
+        .bind_openssl(&bind, builder)?
         .run();
 
         Ok(server)

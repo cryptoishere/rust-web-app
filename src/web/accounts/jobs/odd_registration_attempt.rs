@@ -1,4 +1,5 @@
-use std::collections::HashMap;
+// use std::collections::HashMap;
+use jelly::tera::Context;
 use std::env::var;
 use std::pin::Pin;
 use std::future::Future;
@@ -23,6 +24,19 @@ pub struct SendAccountOddRegisterAttemptEmail {
     pub to: String
 }
 
+pub fn build_context(name: &str) -> Context {
+    let mut context = Context::new();
+    context.insert("name", name);
+    context.insert(
+        "action_url",
+        &format!(
+            "{}/accounts/reset/",
+            var("DOMAIN").expect("DOMAIN not set?")
+        ),
+    );
+    context
+}
+
 impl Job for SendAccountOddRegisterAttemptEmail {
     type State = JobState;
     type Future = Pin<Box<dyn Future<Output=Result<(), Error>> + Send>>;
@@ -33,20 +47,30 @@ impl Job for SendAccountOddRegisterAttemptEmail {
     fn run(self, state: JobState) -> Self::Future {
         Box::pin(async move {
             let name = Account::fetch_name_from_email(&self.to, &state.pool).await.map_err(|e| {
-                anyhow!("Error fetching user name/email for odd registration attempt: {:?}", e)
+                anyhow!("Error fetching user name for odd registration attempt: {:?}", e)
             })?;
 
-            let email = Email::new("odd-registration-attempt", &[self.to], {
-                let mut model = HashMap::new();
-                model.insert("preview", "Did you want to reset your password?".into());
-                model.insert("name", name);
-                model.insert("action_url", format!("{}/accounts/reset/", var("DOMAIN")
-                        .expect("DOMAIN not set?")
-                ));
-                model
-            });
+            // let email = Email::new("odd-registration-attempt", &[self.to], {
+            //     let mut model = HashMap::new();
+            //     model.insert("preview", "Did you want to reset your password?".into());
+            //     model.insert("name", name);
+            //     model.insert("action_url", format!("{}/accounts/reset/", var("DOMAIN")
+            //             .expect("DOMAIN not set?")
+            //     ));
+            //     model
+            // });
             
-            email.send()?;
+            // email.send()?;
+
+            let email = Email::new(
+                "email/odd-registration-attempt",
+                &[self.to],
+                "Did you want to reset your password?",
+                build_context(&name),
+                state.templates,
+            );
+
+            email?.send()?;
             
             Ok(())
         })

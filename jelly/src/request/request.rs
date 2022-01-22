@@ -1,3 +1,4 @@
+use std::env;
 use std::sync::{Arc, RwLock};
 
 use actix_web::{HttpRequest, HttpResponse};
@@ -44,6 +45,12 @@ impl Render for HttpRequest {
         let messages = self.get_flash_messages()?;
         context.insert("user", &user);
         context.insert("flash_messages", &messages);
+
+        for (k, v) in env::vars() {
+            if k.starts_with("JELLY_") {
+                context.insert(k, &v);
+            }
+        }
 
         if let Some(eng) = data {
             let engine = eng.read().map_err(|e| {

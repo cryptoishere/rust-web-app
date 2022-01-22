@@ -1,4 +1,5 @@
-use std::collections::HashMap;
+// use std::collections::HashMap;
+use jelly::tera::Context;
 use std::env;
 use std::future::Future;
 use std::pin::Pin;
@@ -14,6 +15,12 @@ use crate::web::accounts::Account;
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SendVerifyAccountEmail {
     pub to: i32
+}
+
+pub fn build_context(verify_url: &str) -> Context {
+    let mut context = Context::new();
+    context.insert("action_url", &verify_url);
+    context
 }
 
 impl Job for SendVerifyAccountEmail {
@@ -41,14 +48,24 @@ impl Job for SendVerifyAccountEmail {
                 })?
             );
 
-            let email = Email::new("verify-account", &[account.email], {
-                let mut model = HashMap::new();
-                model.insert("preview", "Verify your new account".into());
-                model.insert("action_url", verify_url);
-                model
-            });
+            // let email = Email::new("verify-account", &[account.email], {
+            //     let mut model = HashMap::new();
+            //     model.insert("preview", "Verify your new account".into());
+            //     model.insert("action_url", verify_url);
+            //     model
+            // });
             
-            email.send()?;
+            // email.send()?;
+
+            let email = Email::new(
+                "email/verify-account",
+                &[account.email],
+                "Verify your new account",
+                build_context(&verify_url),
+                state.templates,
+            );
+
+            email?.send()?;
             
             Ok(())
         })

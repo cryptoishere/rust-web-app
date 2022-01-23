@@ -14,6 +14,7 @@ pub async fn send(request: HttpRequest) -> Result<HttpResponse> {
         let _is_admin = user.is_admin;
         let _is_anonymous = user.is_anonymous;
 
+        context.insert("is_logged_in", &true);
         context.insert("user_id_string", &format!("SEND.rs User ID: {:?}", id));
         context
     })

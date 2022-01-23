@@ -15,7 +15,7 @@ pub async fn not_found(request: HttpRequest) -> Result<HttpResponse, Error> {
 }
 
 /// Enables serving static files.
-#[cfg(feature = "static")]
+// #[cfg(feature = "static")]
 pub fn static_handler(config: &mut ServiceConfig) {
     let static_path = std::env::var("STATIC_ROOT")
         .expect("Running in debug without STATIC_ROOT set!");
@@ -26,6 +26,6 @@ pub fn static_handler(config: &mut ServiceConfig) {
     config.service(fs);
 } 
 
-/// A noop static handler for production usage.
-#[cfg(not(feature = "static"))]
-pub fn static_handler(_config: &mut ServiceConfig) {}
+// A noop static handler for production usage.
+// #[cfg(not(feature = "static"))]
+// pub fn static_handler(_config: &mut ServiceConfig) {}

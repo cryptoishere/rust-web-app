@@ -135,8 +135,10 @@ footer .footer-container {
   width: 32px;
 }
 
-.footer-container .status-indicator {
+.footer-container .status-indicator::after {
+  content: '\2022';
   color: greenyellow;
+  font-size: 24px;
   margin: 0 5px;
 }
 

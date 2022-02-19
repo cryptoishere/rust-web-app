@@ -17,3 +17,5 @@ Cargo.lock
 certs/*
 
 migrations/
+
+front-livedev/

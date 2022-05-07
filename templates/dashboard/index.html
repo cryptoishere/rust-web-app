@@ -1,20 +1,12 @@
-{% extends "dashboard/layout.html" %}
+{% extends "layout.html" %}
 
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<ul>
-    <li><a href="/">Main</a></li>
-    <li><a href="/dashboard/">Dashboard</a></li>
-    <li><a href="/node">Node</a></li>
-    <li><a href="/send/">Send STH</a></li>
-    <li><a href="/contact">Contact</a></li>
-</ul>
-<div class="wrapper pageheader">
-    <h1>Dashboard</h1>
-    <p>Welcome back, {{ user.name }}.</p>
-    <div>Tera template engine {{ integer_example }}</div>
-    <div>String created with macro format! ::> {{ user_instance }}</div>
-    <div>End div</div>
-</div>
+    <div class="wrapper">
+        <h1>Dashboard</h1>
+        <p>Welcome back, {{ user.name }}.</p>
+        <div>Logged in: {{ is_logged_in }}</div>
+        <div>String created with macro format! ::> {{ user_instance }}</div>
+    </div>
 {% endblock %}

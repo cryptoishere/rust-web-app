@@ -7,6 +7,8 @@ use jelly::Result;
 use crate::web::accounts::Account;
 use crate::web::accounts::views::utils::validate_token;
 
+use crate::web::accounts::jobs::{SendWelcomeAccountEmail};
+
 /// Just renders a standard "Check your email and verify" page.
 pub async fn verify(request: HttpRequest) -> Result<HttpResponse> {
     request.render(200, "accounts/verify/index.html", Context::new())
@@ -30,6 +32,10 @@ pub async fn with_token(
             name: account.name,
             is_admin: account.is_admin,
             is_anonymous: false
+        })?;
+
+        request.queue(SendWelcomeAccountEmail {
+            to: account.id
         })?;
 
         return request.redirect("/dashboard/");

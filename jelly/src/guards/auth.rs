@@ -67,6 +67,7 @@ where
 
         let status = request.is_authenticated();
 
+        // if request is authenticated
         match status {
             Ok(v) if v == true => {
                 let req = ServiceRequest::from_parts(request, payload).ok().unwrap();

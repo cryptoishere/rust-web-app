@@ -15,3 +15,7 @@ Cargo.lock
 /data
 
 certs/*
+
+migrations/
+
+front-livedev/

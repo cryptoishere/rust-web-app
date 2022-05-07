@@ -99,9 +99,9 @@ impl Server {
             let mut app = App::new()
                 .app_data(pool.clone())
                 .app_data(templates.clone())
-                .wrap(middleware::Logger::default())
-                .wrap(middleware::Logger::new("%a %{User-Agent}i"))
-                .wrap(middleware::Logger::new("%a"))
+                // .wrap(middleware::Logger::default())
+                // .wrap(middleware::Logger::new("%a %{User-Agent}i"))
+                // .wrap(middleware::Logger::new("%a"))
                 .wrap(session_storage)
                 // Depending on your CORS needs, you may opt to change this 
                 // block. Up to you.

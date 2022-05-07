@@ -1,4 +1,4 @@
-//! Admin dashboard.
+//! Configure scope section.
 
 use jelly::actix_web::web::{resource, scope, ServiceConfig};
 use jelly::guards::Auth;

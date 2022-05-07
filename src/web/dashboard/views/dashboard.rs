@@ -10,7 +10,7 @@ pub async fn dashboard(request: HttpRequest) -> Result<HttpResponse> {
     let user = request.user()?;
 
     // LOG SYSTEM
-    info!(target: "yak_events", "log request from dashboard {:?}", "testing logger ....");
+    info!(target: "dashboard", "log request from dashboard {:?}", "testing logger ....");
 
     request.render(200, "dashboard/index.html", {
         let mut context = Context::new();

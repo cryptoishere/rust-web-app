@@ -5,7 +5,9 @@ use std::io;
 #[macro_use]
 extern crate log;
 
+// Web Services
 pub mod web;
+// Pages
 pub mod pages;
 
 use jelly::Server;
@@ -20,6 +22,7 @@ pub async fn main() -> io::Result<()> {
         .register_jobs(web::accounts::jobs::configure)
         .register_service(web::dashboard::configure)
         .register_service(web::send::configure)
+        .register_service(web::upload::configure)
         .run()
         .await?
         .await
